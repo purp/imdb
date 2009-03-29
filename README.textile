@@ -33,6 +33,7 @@ Thanks to 'We <} Code' for the jump start via http://www.weheartcode.com/2007/04
 
 
 h3. Offenses I Hope To Perpetrate On This Fork, by purp
+
 * Refactor to use IMDB::Movie pattern while maintaining backward compatibility with ImdbMovie
 * Add finders for all IMDB searches (title, name, char name, lookup, history/on this day, recent releases, and metasearch)
 * Add subclasses for TV Series, TV Episode, and Video Game
