@@ -34,8 +34,10 @@ Thanks to 'We <} Code' for the jump start via http://www.weheartcode.com/2007/04
 
 h3. Offenses I Hope To Perpetrate On This Fork, by purp
 
-* Refactor to use IMDB::Movie pattern while maintaining backward compatibility with ImdbMovie
-* Make IMDB::Title object as base for IMDB::Movie
-* Add finders for all IMDB searches (title, name, char name, lookup, history/on this day, recent releases, and metasearch)
-* Add subclasses for TV Series, TV Episode, and Video Game
+* *[DONE]* Refactor to use IMDB::Movie pattern while maintaining backward compatibility with ImdbMovie
 * Refactor tests to use local fixtures rather than require teh intarweb (too sloooooow and prone to transient errors)
+* Make IMDB::Title object as base for IMDB::Movie
+* Add IMDB::Series, IMDB::Episode using IMDB::Title as a base
+* Add finders for all IMDB searches (title, name, char name, lookup, history/on this day, recent releases, and metasearch)
+* Add IMDB::Game (with IMDB::Title as base) for completeness
+* See if there is interesting work on other unmerged forks and, if so, pull it in
