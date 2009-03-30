@@ -36,7 +36,7 @@ h3. Offenses I Hope To Perpetrate On This Fork, by purp
 
 * *[DONE]* Refactor to use IMDB::Movie pattern while maintaining backward compatibility with ImdbMovie
 * *[DONE]* Refactor tests to use local fixtures rather than require teh intarweb (too sloooooow and prone to transient errors)
-* Add a rakefile with tasks for spec and refreshing fixtures
+* *[DONE]* Add a rakefile with tasks for spec and refreshing fixtures
 * Make IMDB::Title object as base for IMDB::Movie
 * Add IMDB::Series, IMDB::Episode using IMDB::Title as a base
 * Add finders for all IMDB searches (title, name, char name, lookup, history/on this day, recent releases, and metasearch)
