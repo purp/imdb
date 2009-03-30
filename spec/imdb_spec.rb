@@ -2,10 +2,10 @@ require 'imdb'
 
 describe IMDB do
   it "should have an imdb movie base url" do
-    IMDB::IMDB_MOVIE_BASE_URL.should eql("http://www.imdb.com/title/")
+    IMDB::MOVIE_BASE_URL.should eql("http://www.imdb.com/title/")
   end
   it "should have an imdb search base url" do
-    IMDB::IMDB_SEARCH_BASE_URL.should eql("http://imdb.com/find?s=all&q=")
+    IMDB::SEARCH_BASE_URL.should eql("http://imdb.com/find?s=all&q=")
   end
 end
 
