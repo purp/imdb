@@ -1,14 +1,14 @@
 class IMDB
 
-  IMDB_MOVIE_BASE_URL = "http://www.imdb.com/title/"
-  IMDB_NAME_BASE_URL = "http://www.imdb.com/name/"
-  IMDB_COMPANY_BASE_URL = "http://www.imdb.com/company/"
-  IMDB_GENRE_BASE_URL = "http://www.imdb.com/Sections/Genres/"
-  IMDB_SEARCH_BASE_URL = "http://imdb.com/find?s=all&q="
+  MOVIE_BASE_URL = "http://www.imdb.com/title/"
+  NAME_BASE_URL = "http://www.imdb.com/name/"
+  COMPANY_BASE_URL = "http://www.imdb.com/company/"
+  GENRE_BASE_URL = "http://www.imdb.com/Sections/Genres/"
+  SEARCH_BASE_URL = "http://imdb.com/find?s=all&q="
 
   def self.find_movie_by_id(id)
     
-    data = Hpricot(open(IMDB_MOVIE_BASE_URL + id))
+    data = Hpricot(open(MOVIE_BASE_URL + id))
     
     movie = IMDB::Movie.new
     
