@@ -1,4 +1,6 @@
+require 'spec_helper'
 require 'imdb'
+
 
 describe IMDB do
   it "should have an imdb movie base url" do
@@ -19,6 +21,10 @@ describe IMDB::Movie, " when first created" do
 end
 
 describe IMDB::Movie, " after a IMDB.find_by_id returns it" do 
+  before(:all) do
+    silence_warnings {IMDB::MOVIE_BASE_URL = File.join(FIXTURE_DIR, 'title', '')}
+  end
+  
   before(:each) do
     @movie = IMDB.find_movie_by_id('tt0382932')
   end
