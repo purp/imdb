@@ -4,36 +4,68 @@ require 'imdb'
 
 describe IMDB do
   it "should have an imdb movie base url" do
-    IMDB::MOVIE_BASE_URL.should eql("http://www.imdb.com/title/")
+    IMDB::Title::BASE_URL.should eql("http://www.imdb.com/title/")
   end
   it "should have an imdb search base url" do
     IMDB::SEARCH_BASE_URL.should eql("http://imdb.com/find?s=all&q=")
   end
 end
 
-describe IMDB::Movie, " when first created" do
-
-  it "should not have an imdb_id" do
-    movie = IMDB::Movie.new
-    movie.imdb_id.should be_nil
+describe IMDB::Title, "when first created" do
+  before(:each) do
+    @title = IMDB::Title.new
   end
-
+  
+  it "should have appropriate accessors" do
+    [:imdb_id, :title, :rating, :directors, :writers, :plot, :genres].each do |attr_sym|
+      @title.should respond_to(attr_sym)
+      @title.should respond_to(attr_sym.to_s + "=")
+    end
+  end
+  
+  it "should default list accessors to empty arrays" do
+    [:directors, :writers, :genres].each do |attr_sym|
+      @title.send(attr_sym).should == []
+    end
+  end
+      
+  it "should default non-list accessors to nil" do
+    [:imdb_id, :title, :rating, :plot,].each do |attr_sym|
+      @title.send(attr_sym).should be_nil
+    end
+  end
 end
 
-describe IMDB::Movie, " after a IMDB.find_by_id returns it" do 
+describe IMDB::Title, "finders" do
   before(:all) do
-    silence_warnings {IMDB::MOVIE_BASE_URL = File.join(FIXTURE_DIR, 'title', '')}
+    silence_warnings {IMDB::TITLE_BASE_URL = File.join(FIXTURE_DIR, 'title', '')}
+  end
+  
+  it "should find by IMDB id and return an IMDB::Title or subclass which responds with non-nil values" do
+    {'tt0382932' => IMDB::Movie, 'tt0075529' => IMDB::Series, 'tt0636615' => IMDB::Episode}.each do |title_id, klass|
+      title = IMDB::Title.find_by_id(title_id)
+      title.kind_of?(IMDB::Title).should be_true
+      title.instance_of?(klass).should be_true
+      title.imdb_id.should == title_id
+      [:directors, :writers, :genres].each do |attr_sym|
+        title.send(attr_sym).should_not == []
+      end
+      [:imdb_id, :title, :plot,].each do |attr_sym|
+        title.send(attr_sym).should_not be_nil
+      end
+    end
+  end
+end
+
+describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do 
+  before(:all) do
+    silence_warnings {IMDB::Title::BASE_URL = File.join(FIXTURE_DIR, 'title', '')}
   end
   
   before(:each) do
-    @movie = IMDB.find_movie_by_id('tt0382932')
+    @movie = IMDB::Title.find_by_id('tt0382932') # Ratatouille by Pixar
   end
-  
-  
-  it "should have an imdb_id" do
-    @movie.imdb_id.should eql('tt0382932')
-  end
-
+    
   it "should have a title" do
     @movie.title.should eql('Ratatouille')
   end
@@ -110,6 +142,5 @@ describe IMDB::Movie, " after a IMDB.find_by_id returns it" do
     @movie.genres = nil
     @movie.genres.should == []
   end
-
 end
 
