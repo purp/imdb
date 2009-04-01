@@ -7,6 +7,22 @@ class Imdb < IMDB
   IMDB_SEARCH_BASE_URL  = IMDB::SEARCH_BASE_URL 
 end
 
+class IMDB::Title
+  alias :imdb_id :id
+end
+
+class IMDB::Company
+  alias :imdb_id :id
+end
+
+class IMDB::Genre
+  alias :imdb_id :id
+end
+
+class IMDB::Name
+  alias :imdb_id :id
+end
+
 class ImbdCompany < IMDB::Company
 end
 
@@ -19,4 +35,3 @@ end
 class ImdbName < IMDB::Name
 end
 
-  

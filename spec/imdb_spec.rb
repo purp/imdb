@@ -17,7 +17,7 @@ describe IMDB::Title, "when first created" do
   end
   
   it "should have appropriate accessors" do
-    [:imdb_id, :title, :rating, :directors, :writers, :plot, :genres].each do |attr_sym|
+    [:id, :title, :rating, :directors, :writers, :plot, :genres].each do |attr_sym|
       @title.should respond_to(attr_sym)
       @title.should respond_to(attr_sym.to_s + "=")
     end
@@ -30,7 +30,7 @@ describe IMDB::Title, "when first created" do
   end
       
   it "should default non-list accessors to nil" do
-    [:imdb_id, :title, :rating, :plot,].each do |attr_sym|
+    [:id, :title, :rating, :plot,].each do |attr_sym|
       @title.send(attr_sym).should be_nil
     end
   end
@@ -46,11 +46,11 @@ describe IMDB::Title, "finders" do
       title = IMDB::Title.find_by_id(title_id)
       title.kind_of?(IMDB::Title).should be_true
       title.instance_of?(klass).should be_true
-      title.imdb_id.should == title_id
+      title.id.should == title_id
       [:directors, :writers, :genres].each do |attr_sym|
         title.send(attr_sym).should_not == []
       end
-      [:imdb_id, :title, :plot,].each do |attr_sym|
+      [:id, :title, :plot,].each do |attr_sym|
         title.send(attr_sym).should_not be_nil
       end
     end
@@ -75,28 +75,28 @@ describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do
   end
 
   it "should have a company" do
-    @movie.company.imdb_id.should eql('co0017902')
+    @movie.company.id.should eql('co0017902')
     @movie.company.name.should eql('Pixar Animation Studios')
   end
 
   it "should have two directors" do
     @movie.directors.length.should == 2
-    @movie.directors[0].imdb_id.should eql('nm0083348');
+    @movie.directors[0].id.should eql('nm0083348');
     @movie.directors[0].name.should eql('Brad Bird');
     @movie.directors[0].role.should eql(nil);
 
-    @movie.directors[1].imdb_id.should eql('nm0684342');
+    @movie.directors[1].id.should eql('nm0684342');
     @movie.directors[1].name.should eql('Jan Pinkava');
     @movie.directors[1].role.should eql('co-director');
   end
 
   it "should have two writers" do
     @movie.writers.length.should == 2
-    @movie.writers[0].imdb_id.should eql('nm0083348');
+    @movie.writers[0].id.should eql('nm0083348');
     @movie.writers[0].name.should eql('Brad Bird');
     @movie.writers[0].role.should eql('screenplay');
 
-    @movie.writers[1].imdb_id.should eql('nm0684342');
+    @movie.writers[1].id.should eql('nm0684342');
     @movie.writers[1].name.should eql('Jan Pinkava');
     @movie.writers[1].role.should eql('story');
   end

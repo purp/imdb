@@ -15,7 +15,21 @@ class IMDB
       end
     end
 
-    attr_accessor :imdb_id, :title, :directors, :writers, :tagline, :company, :plot, :runtime, :rating, :poster_url, :release_date, :genres
+    attr_accessor :id, :title, :directors, :writers, :tagline, :company, :plot, :runtime, :rating, :poster_url, :release_date, :genres
+
+    def id
+      if !@id && @doc
+        @id = File.basename((@doc%"link[@rel='canonical']").attributes['href'])
+      end
+      @id
+    end
+
+    def title
+      if !@title && @doc
+        @title = @doc.at("meta[@name='title']")['content'].gsub(/\(\d{4}\)/,'').strip
+      end
+      @title
+    end
 
     def initialize(text = nil)
       return self unless text
@@ -23,9 +37,6 @@ class IMDB
       ### TODO: Take a URL?      
       @src = text.class == Array ? text.join : text
       @doc = Hpricot(@src)
-
-      @imdb_id = File.basename((@doc%"link[@rel='canonical']").attributes['href'])
-      @title = @doc.at("meta[@name='title']")['content'].gsub(/\(\d\d\d\d\)/,'').strip
 
       rating_text = (@doc/"div.rating/div.meta/b").inner_text
       if rating_text =~ /([\d\.]+)\/10/
@@ -82,6 +93,10 @@ class IMDB
     
     def genres
       @genres ? @genres : @genres = []
+    end
+    
+    def type
+      self.class.to_s.split(':')[-1].downcase
     end
   end
   
