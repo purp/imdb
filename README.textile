@@ -39,6 +39,9 @@ h3. Offenses I Hope To Perpetrate On This Fork, by purp
 * *[DONE]* Add a rakefile with tasks for spec and refreshing fixtures
 * *[DONE]* Make IMDB::Title object as base for IMDB::Movie
 * *[DONE]* Add IMDB::Series, IMDB::Episode using IMDB::Title as a base
+* Move libs into lib directory
+* Extend module (attr_accessor_with_default from activesupport) and kernel (silence_warnings from facets)
+* Extract attr parsers from initializer and lazy-load instance vars as called
 * Add Series-only attrs to IMDB::Series
 * Add Episode-only attrs to IMDB::Episode
 * Add finders for all IMDB searches (title, name, char name, lookup, history/on this day, recent releases, and metasearch)

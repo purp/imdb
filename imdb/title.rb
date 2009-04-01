@@ -15,7 +15,9 @@ class IMDB
       end
     end
 
+    ### TODO: Are accessors the right idea? Is there ever a time we want to push in values?
     attr_accessor :id, :title, :directors, :writers, :tagline, :company, :plot, :runtime, :rating, :poster_url, :release_date, :genres
+    
 
     def id
       if !@id && @doc
@@ -30,6 +32,16 @@ class IMDB
       end
       @title
     end
+    
+    def rating
+      if !@rating && @doc
+        rating_text = (@doc/"div.rating/div.meta/b").inner_text
+        if rating_text =~ /([\d\.]+)\/10/
+          @rating = $1
+        end
+      end
+      @rating
+    end
 
     def initialize(text = nil)
       return self unless text
@@ -37,11 +49,6 @@ class IMDB
       ### TODO: Take a URL?      
       @src = text.class == Array ? text.join : text
       @doc = Hpricot(@src)
-
-      rating_text = (@doc/"div.rating/div.meta/b").inner_text
-      if rating_text =~ /([\d\.]+)\/10/
-        @rating = $1
-      end
 
       begin
         @poster_url = @doc.at("div.photo/a[@name='poster']/img")['src']
