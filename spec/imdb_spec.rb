@@ -38,7 +38,7 @@ end
 
 describe IMDB::Title, "finders" do
   before(:all) do
-    silence_warnings {IMDB::TITLE_BASE_URL = File.join(FIXTURE_DIR, 'title', '')}
+    silence_warnings {IMDB::Title::BASE_URL = File.join(FIXTURE_DIR, 'title', '')}
   end
   
   it "should find by IMDB id and return an IMDB::Title or subclass which responds with non-nil values" do
