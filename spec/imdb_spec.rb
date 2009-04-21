@@ -1,6 +1,8 @@
 require 'spec_helper'
 require 'imdb'
 
+TITLE_SINGLE_VALUE_ATTRS = [:url, :id, :title, :rating, :plot]
+TITLE_MULTI_VALUE_ATTRS = [:directors, :writers, :genres]
 
 describe IMDB do
   it "should have an imdb movie base url" do
@@ -17,20 +19,20 @@ describe IMDB::Title, "when first created" do
   end
   
   it "should have appropriate readers" do
-    [:url, :id, :title, :rating, :directors, :writers, :plot, :genres].each do |attr_sym|
+    [TITLE_SINGLE_VALUE_ATTRS + TITLE_MULTI_VALUE_ATTRS].flatten.each do |attr_sym|
       @title.should respond_to(attr_sym)
       @title.should respond_to("#{attr_sym}_from_doc".to_sym)
     end
   end
   
   it "should default list readers to empty arrays" do
-    [:directors, :writers, :genres].each do |attr_sym|
+    TITLE_MULTI_VALUE_ATTRS.each do |attr_sym|
       @title.send(attr_sym).should == []
     end
   end
       
   it "should default non-list accessors to nil" do
-    [:url, :id, :title, :rating, :plot,].each do |attr_sym|
+    TITLE_SINGLE_VALUE_ATTRS.each do |attr_sym|
       @title.send(attr_sym).should be_nil
     end
   end
@@ -62,10 +64,10 @@ describe IMDB::Title, "finders" do
       title.kind_of?(IMDB::Title).should be_true
       title.instance_of?(klass).should be_true
       title.id.should == title_id
-      [:directors, :writers, :genres].each do |attr_sym|
+      TITLE_MULTI_VALUE_ATTRS.each do |attr_sym|
         title.send(attr_sym).should_not == []
       end
-      [:url, :id, :title, :plot,].each do |attr_sym|
+      TITLE_SINGLE_VALUE_ATTRS.each do |attr_sym|
         title.send(attr_sym).should_not be_nil
       end
     end
