@@ -2,7 +2,7 @@ class IMDB
   class Genre
     def self.get_genres(node)
       return unless node && node.class == Nokogiri::XML::Element
-      genres = (node/"a").map {|elem| elem.inner_text} - ['more']
+      genres = (node/"a").map {|elem| elem.inner_text.strip} - ['more']
       genres.map {|genre| IMDB::Genre.new(genre)}
     end
     
