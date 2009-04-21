@@ -87,38 +87,4 @@ class IMDB
       self.class.to_s.split(':')[-1].downcase
     end
   end
-  
-  protected
-  
-  def self.parse_info(info)
-    value = info.inner_text.gsub(/\n/,'') 
-    if value =~ /\:(.+)/ 
-      value = $1
-    end
-    value.gsub(/ more$/, '')
-  end
-  
-  def self.parse_names(info)
-    # <a href="/name/nm0083348/">Brad Bird</a><br/><a href="/name/nm0684342/">Jan Pinkava</a> (co-director)<br/>N
-    info.inner_html.scan(/<a href="\/name\/([^"]+)\/">([^<]+)<\/a>( \(([^)]+)\))?/).map do |match|
-      IMDB::Name.new(match[0], match[1], match[3])
-    end
-  end
-  
-  def self.parse_company(info)
-    # <a href="/company/co0017902/">Pixar Animation Studios</a>
-    match = info.inner_html =~ /<a href="\/company\/([^"]+)\/">([^<]+)<\/a>/;
-    IMDB::Company.new($1, $2)
-  end
-
-  def self.parse_genres(info)
-    # <a href="/Sections/Genres/Animation/">Animation</a> / <a href="/Sections/Genres/Adventure/">Adventure</a>
-    genre_links = (info/"a").find_all do |link|
-      link['href'] =~ /^\/Sections\/Genres/
-    end 
-    genre_links.map do |link|
-      genre = link['href'] =~ /([^\/]+)\/$/
-      IMDB::Genre.new($1, $1)
-    end
-  end
 end
