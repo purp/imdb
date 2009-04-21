@@ -1,10 +1,10 @@
-h2. Imdb: A simple ruby library to scrape IMDB
+h2. imdb: A simple ruby library to scrape IMDB
 
-h3. Usage
+h3. Old Skool Usage and Original Credits
 
 <pre>
 <code>
-require 'Imdb'
+require 'imdb'
 
 movie = Imdb.find_movie_by_id('tt1099212')
 
@@ -31,6 +31,37 @@ puts "Poster URL: #{movie.poster_url}"
 Thats about all it does. its simple. I only made it to work with another project.
 Thanks to 'We <} Code' for the jump start via http://www.weheartcode.com/2007/04/03/scraping-imdb-with-ruby-and-hpricot/
 
+h3. The New Style Usage
+
+New Style usage is pretty close to Old Skool; mostly, it's just a shift to the preferred Ruby subclass idiom
+
+<pre>
+<code>
+require 'imdb'
+
+movie = IMDB::Movie.find_by_id('tt1099212')
+
+puts "IMDB ID: #{movie.id}"
+puts "Title: #{movie.title}"
+puts "Rating: #{movie.rating}"
+puts "Release Date: #{movie.release_date}"
+puts "Tagline: #{movie.tagline}"
+puts "Plot: #{movie.plot}"
+puts "Runtime: #{movie.runtime}"
+movie.directors.each do |director|
+        puts "Director: #{director.name}"
+end
+movie.writers.each do |writer|
+        puts "Writer: #{writer.name}"
+end
+movie.genres.each do |genre|
+        puts "Genre: #{genre.name}"
+end
+puts "Poster URL: #{movie.poster_url}"
+</code>
+</pre>
+
+
 
 h3. Offenses I Hope To Perpetrate On This Fork, by purp
 
@@ -41,9 +72,14 @@ h3. Offenses I Hope To Perpetrate On This Fork, by purp
 * *[DONE]* Add IMDB::Series, IMDB::Episode using IMDB::Title as a base
 * *[DONE]* Move libs into lib directory
 * *[DONE]* Extend module (attr_accessor_with_default from activesupport) and kernel (silence_warnings from facets)
-* Extract attr parsers from initializer and lazy-load instance vars as called
+* *[DONE]* Extract attr parsers from initializer and lazy-load instance vars as called
+
+... *old skool compatibility by default dies here* ... if you need old skool, you'll have to require it manually from here out.
+
+* Refactor to use nokogiri instead of hpricot; tighten all the parsing even further
 * Add Series-only attrs to IMDB::Series
 * Add Episode-only attrs to IMDB::Episode
 * Add finders for all IMDB searches (title, name, char name, lookup, history/on this day, recent releases, and metasearch)
+* Refactor to eliminate gathered TODOs
 * Add IMDB::Game (with IMDB::Title as base) for completeness
 * See if there is interesting work on other unmerged forks and, if so, pull it in

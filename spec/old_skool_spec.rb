@@ -1,5 +1,7 @@
 require 'spec_helper'
 require 'imdb'
+# For compatibility with the old skool way of doing things
+require 'imdb/old_skool_compatibility'
 
 describe Imdb do
   it "should have an imdb movie base url" do
