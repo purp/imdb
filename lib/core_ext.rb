@@ -59,3 +59,13 @@ class Module
     EVAL
   end
 end
+
+module Nokogiri
+  module HTML
+    class Document
+      def %(expr)
+        search(expr).first
+      end
+    end
+  end
+end

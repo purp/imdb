@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'hpricot'
+require 'nokogiri'
 require 'open-uri'
 require 'date'
 

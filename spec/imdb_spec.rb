@@ -17,7 +17,7 @@ describe IMDB::Title, "when first created" do
   end
   
   it "should have appropriate readers" do
-    [:id, :title, :rating, :directors, :writers, :plot, :genres].each do |attr_sym|
+    [:url, :id, :title, :rating, :directors, :writers, :plot, :genres].each do |attr_sym|
       @title.should respond_to(attr_sym)
       @title.should respond_to("#{attr_sym}_from_doc".to_sym)
     end
@@ -30,7 +30,7 @@ describe IMDB::Title, "when first created" do
   end
       
   it "should default non-list accessors to nil" do
-    [:id, :title, :rating, :plot,].each do |attr_sym|
+    [:url, :id, :title, :rating, :plot,].each do |attr_sym|
       @title.send(attr_sym).should be_nil
     end
   end
@@ -65,7 +65,7 @@ describe IMDB::Title, "finders" do
       [:directors, :writers, :genres].each do |attr_sym|
         title.send(attr_sym).should_not == []
       end
-      [:id, :title, :plot,].each do |attr_sym|
+      [:url, :id, :title, :plot,].each do |attr_sym|
         title.send(attr_sym).should_not be_nil
       end
     end
@@ -79,6 +79,14 @@ describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do
   
   before(:each) do
     @movie = IMDB::Title.find_by_id('tt0382932') # Ratatouille by Pixar
+  end
+  
+  it "should have an id" do
+    @movie.id.should == 'tt0382932'
+  end
+  
+  it "should have a url" do
+    @movie.url.should == "http://www.imdb.com/title/tt0382932/"
   end
     
   it "should have a title" do
