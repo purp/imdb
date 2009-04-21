@@ -1,5 +1,10 @@
 class IMDB
   class Genre
+    def self.get_genres(node)
+      genres = (node/"a").map {|elem| elem.inner_text} - ['more']
+      genres.map {|genre| IMDB::Genre.new(genre)}
+    end
+    
     attr_accessor :id, :name
   
     def initialize(imdb_id)

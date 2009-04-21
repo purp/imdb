@@ -16,7 +16,7 @@ class IMDB
     end
     
     attr_reader_from_doc_with_nil_default(:url) do
-      (@doc%"link[@rel='canonical']").attributes['href'].to_s
+      (@doc%"link[@rel='canonical']")['href'].to_s
     end
     
     attr_reader_from_doc_with_nil_default(:id) do
@@ -44,8 +44,7 @@ class IMDB
     end
     
     attr_reader_from_doc_with_nil_default(:company) do
-      info_node = (get_info_from_doc('Company:')/"a").first
-      IMDB::Company.new(info_node.attributes['href'].to_s.split('/')[-1], info_node.inner_text)
+      IMDB::Company.new(get_info_from_doc('Company:'))
     end
     
     attr_reader_from_doc_with_nil_default(:plot) do
@@ -63,16 +62,15 @@ class IMDB
     end
     
     attr_reader_from_doc_with_empty_array_default(:directors) do
-      get_names_from_html(get_info_from_doc('Director').inner_html)
+      IMDB::Name.get_names(get_info_from_doc('Director'))
     end
 
     attr_reader_from_doc_with_empty_array_default(:writers) do
-      get_names_from_html(get_info_from_doc('Writer').inner_html)
+      IMDB::Name.get_names(get_info_from_doc('Writer'))
     end
 
     attr_reader_from_doc_with_empty_array_default(:genres) do
-      genres = (get_info_from_doc('Genre')/"a").map {|elem| elem.inner_text} - ['more']
-      genres.map {|genre| IMDB::Genre.new(genre)}
+      IMDB::Genre.get_genres(get_info_from_doc('Genre'))
     end
     
     def initialize(text = nil)
@@ -91,10 +89,6 @@ class IMDB
     
     def get_info_from_doc(name)
       (@doc%"div[@class = 'info']/h5[contains('#{name}')]").parent
-    end
-    
-    def get_names_from_html(html)
-      html.scan(/<a href="\/name\/([^"]+)\/">([^<]+)<\/a>(?: \(([^)]+)\))?/).map {|vals| IMDB::Name.new(vals[0], vals[1], vals[2])}
     end
   end
 end
