@@ -31,9 +31,9 @@ puts "Poster URL: #{movie.poster_url}"
 Thats about all it does. its simple. I only made it to work with another project.
 Thanks to 'We <} Code' for the jump start via http://www.weheartcode.com/2007/04/03/scraping-imdb-with-ruby-and-hpricot/
 
-h3. The New Style Usage
+h3. New Style Usage
 
-New Style usage is pretty close to Old Skool; mostly, it's just a shift to the preferred Ruby subclass idiom
+New Style usage is pretty close to Old Skool; mostly, it's just a shift to the preferred Ruby subclass idiom of IMDB::Movie (rather than ImdbMovie).
 
 <pre>
 <code>
@@ -60,26 +60,3 @@ end
 puts "Poster URL: #{movie.poster_url}"
 </code>
 </pre>
-
-
-
-h3. Offenses I Hope To Perpetrate On This Fork, by purp
-
-* *[DONE]* Refactor to use IMDB::Movie pattern while maintaining backward compatibility with ImdbMovie
-* *[DONE]* Refactor tests to use local fixtures rather than require teh intarweb (too sloooooow and prone to transient errors)
-* *[DONE]* Add a rakefile with tasks for spec and refreshing fixtures
-* *[DONE]* Make IMDB::Title object as base for IMDB::Movie
-* *[DONE]* Add IMDB::Series, IMDB::Episode using IMDB::Title as a base
-* *[DONE]* Move libs into lib directory
-* *[DONE]* Extend module (attr_accessor_with_default from activesupport) and kernel (silence_warnings from facets)
-* *[DONE]* Extract attr parsers from initializer and lazy-load instance vars as called
-
-... *old skool compatibility by default dies here* ... if you need old skool, you'll have to require it manually from here out.
-
-* Refactor to use nokogiri instead of hpricot; tighten all the parsing even further
-* Add Series-only attrs to IMDB::Series
-* Add Episode-only attrs to IMDB::Episode
-* Add finders for all IMDB searches (title, name, char name, lookup, history/on this day, recent releases, and metasearch)
-* Refactor to eliminate gathered TODOs
-* Add IMDB::Game (with IMDB::Title as base) for completeness
-* See if there is interesting work on other unmerged forks and, if so, pull it in
