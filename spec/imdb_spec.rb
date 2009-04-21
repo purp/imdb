@@ -102,35 +102,43 @@ describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do
   it "should have a company" do
     @movie.company.id.should eql('co0017902')
     @movie.company.name.should eql('Pixar Animation Studios')
+    @movie.company.class.should == IMDB::Company
   end
 
   it "should have two directors" do
     @movie.directors.length.should == 2
-    @movie.directors[0].id.should eql('nm0083348');
-    @movie.directors[0].name.should eql('Brad Bird');
-    @movie.directors[0].role.should eql(nil);
+    @movie.directors[0].id.should eql('nm0083348')
+    @movie.directors[0].name.should eql('Brad Bird')
+    @movie.directors[0].role.should eql(nil)
+    @movie.directors[0].class.should == IMDB::Name
 
-    @movie.directors[1].id.should eql('nm0684342');
-    @movie.directors[1].name.should eql('Jan Pinkava');
-    @movie.directors[1].role.should eql('co-director');
+    @movie.directors[1].id.should eql('nm0684342')
+    @movie.directors[1].name.should eql('Jan Pinkava')
+    @movie.directors[1].role.should eql('co-director')
+    @movie.directors[1].class.should == IMDB::Name
   end
 
   it "should have two writers" do
     @movie.writers.length.should == 2
-    @movie.writers[0].id.should eql('nm0083348');
-    @movie.writers[0].name.should eql('Brad Bird');
-    @movie.writers[0].role.should eql('screenplay');
+    @movie.writers[0].id.should eql('nm0083348')
+    @movie.writers[0].name.should eql('Brad Bird')
+    @movie.writers[0].role.should eql('screenplay')
+    @movie.writers[0].class.should == IMDB::Name
 
-    @movie.writers[1].id.should eql('nm0684342');
-    @movie.writers[1].name.should eql('Jan Pinkava');
-    @movie.writers[1].role.should eql('story');
+    @movie.writers[1].id.should eql('nm0684342')
+    @movie.writers[1].name.should eql('Jan Pinkava')
+    @movie.writers[1].role.should eql('story')
+    @movie.writers[1].class.should == IMDB::Name
   end
 
   it "should have five genres" do
     @movie.genres.length.should == 3
-    @movie.genres[0].name.should eql('Animation');
-    @movie.genres[1].name.should eql('Comedy');
-    @movie.genres[2].name.should eql('Family');
+    @movie.genres[0].name.should eql('Animation')
+    @movie.genres[1].name.should eql('Comedy')
+    @movie.genres[2].name.should eql('Family')
+    @movie.genres.each do |movie|
+      movie.class.should == IMDB::Genre
+    end
   end
 
   it "should have a tagline" do
