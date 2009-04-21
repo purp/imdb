@@ -88,7 +88,8 @@ class IMDB
     protected
     
     def get_info_from_doc(name)
-      (@doc%"div[@class = 'info']/h5[contains('#{name}')]").parent
+      node = (@doc%"div[@class = 'info']/h5[contains('#{name}')]")
+      node ? node.parent : nil
     end
   end
 end

@@ -1,6 +1,7 @@
 class IMDB
   class Name
     def self.get_names(node)
+      return unless node && node.class == Nokogiri::XML::Element
       names = []
       node.inner_html.split(/\n|<br>/).each do |chunk|
         next unless chunk =~ /href="\/name\/nm\d+\/"/
