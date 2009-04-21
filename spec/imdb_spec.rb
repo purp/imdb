@@ -16,14 +16,14 @@ describe IMDB::Title, "when first created" do
     @title = IMDB::Title.new
   end
   
-  it "should have appropriate accessors" do
+  it "should have appropriate readers" do
     [:id, :title, :rating, :directors, :writers, :plot, :genres].each do |attr_sym|
       @title.should respond_to(attr_sym)
-      @title.should respond_to(attr_sym.to_s + "=")
+      @title.should respond_to("#{attr_sym}_from_doc".to_sym)
     end
   end
   
-  it "should default list accessors to empty arrays" do
+  it "should default list readers to empty arrays" do
     [:directors, :writers, :genres].each do |attr_sym|
       @title.send(attr_sym).should == []
     end
@@ -33,6 +33,21 @@ describe IMDB::Title, "when first created" do
     [:id, :title, :rating, :plot,].each do |attr_sym|
       @title.send(attr_sym).should be_nil
     end
+  end
+  
+  it "should return an empty array if writers is nil" do
+    @title.instance_variable_set('@writers', nil)
+    @title.writers.should == []
+  end
+
+  it "should return an empty array if directors is nil" do
+    @title.instance_variable_set('@directors', nil)
+    @title.directors.should == []
+  end
+
+  it "should return an empty array if genres is nil" do
+    @title.instance_variable_set('@genres', nil)
+    @title.genres.should == []
   end
 end
 
@@ -126,21 +141,6 @@ describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do
   
   it "should have a plot" do
     @movie.plot.should eql(%{Remy is a young rat in the French countryside who arrives in Paris, only to find out that his cooking idol is dead. When he makes an unusual alliance with a restaurant's new garbage boy, the culinary and personal adventures begin despite Remy's family's skepticism and the rat-hating world of humans.})
-  end
-
-  it "should return an empty array if writers is nil" do
-    @movie.writers = nil
-    @movie.writers.should == []
-  end
-
-  it "should return an empty array if directors is nil" do
-    @movie.directors = nil
-    @movie.directors.should == []
-  end
-
-  it "should return an empty array if genres is nil" do
-    @movie.genres = nil
-    @movie.genres.should == []
   end
 end
 

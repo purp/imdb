@@ -2,6 +2,22 @@ require 'rubygems'
 require 'hpricot'
 require 'open-uri'
 require 'date'
+
+require 'core_ext'
+
+# # Dynamically load all core libraries.
+# 
+# __DIR__ = File.dirname(__FILE__)
+# 
+# list = []
+# Dir.chdir("#{__DIR__}/imdb") do
+#   list = Dir['*'].map {|file| File.basename(file, ".rb")}
+#   puts ">>> #{list.inspect}"
+# end
+# 
+# list.each{ |f| require "imdb/#{f}" }
+
+
 require 'imdb/base'
 require 'imdb/title'
 require 'imdb/company'

@@ -9,6 +9,36 @@ end
 
 class IMDB::Title
   alias :imdb_id :id
+  
+  alias :writers_without_manual_check :writers
+  def writers
+    @writers_was_manually_set ? (@writers || []) : writers_without_manual_check
+  end
+  
+  alias :directors_without_manual_check :directors
+  def directors
+    @directors_was_manually_set ? (@directors || []) : directors_without_manual_check
+  end
+  
+  alias :genres_without_manual_check :genres
+  def genres
+    @genres_was_manually_set ? (@genres || []) : genres_without_manual_check
+  end
+  
+  def writers=(value)
+    @writers_was_manually_set = true
+    @writers = value
+  end
+
+  def directors=(value)
+    @directors_was_manually_set = true
+    @directors = value
+  end
+
+  def genres=(value)
+    @genres_was_manually_set = true
+    @genres = value
+  end
 end
 
 class IMDB::Company
