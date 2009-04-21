@@ -33,7 +33,7 @@ Thanks to 'We <} Code' for the jump start via http://www.weheartcode.com/2007/04
 
 h3. New Style Usage
 
-New Style usage is pretty close to Old Skool; mostly, it's just a shift to the preferred Ruby subclass idiom of IMDB::Movie (rather than ImdbMovie).
+New Style usage is pretty close to Old Skool; mostly, it's just a shift to the preferred Ruby subclass idiom of IMDB::Movie (rather than ImdbMovie). Also, `imdb_id` is now `id` and `type` returns something meaningful.
 
 <pre>
 <code>

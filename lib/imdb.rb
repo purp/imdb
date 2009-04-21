@@ -5,6 +5,7 @@ require 'date'
 
 require 'core_ext'
 
+### TODO: This doesn't work because I'm ignorant. I should figure this out and learn.
 # # Dynamically load all core libraries.
 # 
 # __DIR__ = File.dirname(__FILE__)
