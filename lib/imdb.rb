@@ -27,5 +27,3 @@ require 'imdb/genre'
 require 'imdb/series'
 require 'imdb/episode'
 
-# For compatibility with the old skool way of doing things
-require 'imdb/old_skool_compatibility'
