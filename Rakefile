@@ -14,9 +14,9 @@ begin
   Spec::Rake::SpecTask.new do |t|
     t.libs << SPEC_DIR
     t.pattern = 'spec/*_spec.rb'
-    # t.spec_files = FileList[SPECS]
     t.rcov = true
     t.rcov_dir = "#{SPEC_DIR}/coverage"
+    t.rcov_opts = ['--exclude', 'lib/core_ext.rb']
     t.verbose = true
   end
   
@@ -35,7 +35,7 @@ end
 
 desc "Refresh test fixtures from IMDB"
 task :refresh_fixtures do
-  fixtures = %w(title/tt0382932 title/tt0075529 title/tt0636615)
+  fixtures = %w(title/tt0382932 title/tt0075529 title/tt0636615 title/tt0374692)
   fixtures.each do |fixture|
     src = open("http://www.imdb.com/#{fixture}")
     dst = open(File.join(FIXTURE_DIR, fixture), 'w')

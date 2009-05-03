@@ -59,11 +59,12 @@ describe IMDB::Title, "finders" do
   end
   
   it "should find by IMDB id and return an IMDB::Title or subclass which responds with non-nil values" do
-    {'tt0382932' => IMDB::Movie, 'tt0075529' => IMDB::Series, 'tt0636615' => IMDB::Episode}.each do |title_id, klass|
+    {'tt0382932' => IMDB::Movie, 'tt0075529' => IMDB::Series, 'tt0636615' => IMDB::Episode, 'tt0374692' => IMDB::Title}.each do |title_id, klass|
       title = IMDB::Title.find_by_id(title_id)
       title.kind_of?(IMDB::Title).should be_true
       title.instance_of?(klass).should be_true
       title.id.should == title_id
+      title.type.should == klass.to_s.split(':')[-1].downcase
       TITLE_MULTI_VALUE_ATTRS.each do |attr_sym|
         title.send(attr_sym).should_not == []
       end
