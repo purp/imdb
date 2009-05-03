@@ -16,7 +16,7 @@ begin
     t.pattern = 'spec/*_spec.rb'
     t.rcov = true
     t.rcov_dir = "#{SPEC_DIR}/coverage"
-    t.rcov_opts = ['--exclude', 'lib/core_ext.rb']
+    t.rcov_opts = ['--exclude', 'lib/core_ext.rb', '--exclude', '"spec/*"']
     t.verbose = true
   end
   
