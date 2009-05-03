@@ -37,6 +37,7 @@ h3. Old Skool Usage and Original Credits
 <pre>
 <code>
 require 'imdb'
+require 'imdb/old_skool_compatibility'
 
 movie = Imdb.find_movie_by_id('tt1099212')
 
