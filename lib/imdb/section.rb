@@ -9,5 +9,9 @@ class IMDB
     def url
       "#{BASE_URL}/#{name}"
     end
+    
+    def to_s
+      "#{name}"
+    end
   end
 end

@@ -139,8 +139,9 @@ describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do
     @movie.genres[0].name.should eql('Animation')
     @movie.genres[1].name.should eql('Comedy')
     @movie.genres[2].name.should eql('Family')
-    @movie.genres.each do |movie|
-      movie.class.should == IMDB::Genre
+    @movie.genres.each do |genre|
+      genre.class.should == IMDB::Genre
+      genre.kind_of?(IMDB::Section).should be_true
     end
   end
 
@@ -162,6 +163,30 @@ describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do
   
   it "should have a plot" do
     @movie.plot.should eql(%{Remy is a young rat in the French countryside who arrives in Paris, only to find out that his cooking idol is dead. When he makes an unusual alliance with a restaurant's new garbage boy, the culinary and personal adventures begin despite Remy's family's skepticism and the rat-hating world of humans.})
+  end
+  
+  it "should have a year" do
+    @movie.year.name.should == '2007'
+    @movie.year.to_s.should == '2007'
+    @movie.year.class.should == IMDB::Year
+    @movie.year.kind_of?(IMDB::Section).should be_true
+  end
+  
+  it "should have two languages" do
+    @movie.languages.length.should == 2
+    @movie.languages[0].name.should == 'English'
+    @movie.languages[1].name.should == 'French'
+    @movie.languages.each do |language|
+      language.class.should == IMDB::Language
+      language.kind_of?(IMDB::Section).should be_true
+    end
+  end
+  
+  it "should have a country" do
+    @movie.country.name.should == 'USA'
+    @movie.country.to_s.should == 'USA'
+    @movie.country.class.should == IMDB::Country
+    @movie.country.kind_of?(IMDB::Section).should be_true
   end
 end
 

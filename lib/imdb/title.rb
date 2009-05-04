@@ -12,9 +12,9 @@ class IMDB
       :directors => {:expr => "div.info[contains('Director', h5)]", :post => Proc.new {|n| IMDB::Name.get_names(n)}, :default => []},
       :writers => {:expr => "div.info[contains('Writer', h5)]", :post => Proc.new {|n| IMDB::Name.get_names(n)}, :default => []},
       :genres => {:expr => "div.info[contains('Genre', h5)]", :post => Proc.new {|n| IMDB::Genre.get_genres(n)}, :default => []},
-      :year => {:expr => "meta[@name='title']", :post => Proc.new {|n| IMDB::Year.new(n['content'].match(/(\d+)\)(?:\s*\(VG\)\s*)?$/).captures.first)}},
+      :year => {:expr => "meta[@name='title']", :post => Proc.new {|n| IMDB::Year.new(n['content'].match(/(\d+)\)(?:\s*\(VG\)\s*)?$/).captures.first.strip)}},
       :languages => {:expr => "div.info[contains('Language', h5)]", :post => Proc.new {|n| IMDB::Language.get_languages(n)}, :default => []},
-      :country => {:expr => "div.info[contains('Country:', h5)]/a", :post => Proc.new {|n| IMDB::Country.new(n)}},
+      :country => {:expr => "div.info[contains('Country:', h5)]/a", :post => Proc.new {|n| IMDB::Country.new(n.inner_text.strip)}},
     }
 
     def self.find_by_id(id)
