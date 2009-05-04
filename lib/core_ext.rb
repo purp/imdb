@@ -9,63 +9,20 @@ module Kernel
 end
 
 class Module
-  # Stolen from Active Support because it loads too slowly and I only want this;
-  # mutated wildly from there, so all bugs are mine.
-  #
-  # Declare an attribute accessor with an initial default return value.
-  #
-  # To give attribute <tt>:age</tt> the initial value <tt>25</tt>:
-  #  
-  #   class Person
-  #     attr_accessor_with_default :age, 25
-  #   end
-  #
-  #   some_person.age
-  #   => 25
-  #   some_person.age = 26
-  #   some_person.age
-  #   => 26
-  #
-  # To give attribute <tt>:element_name</tt> a dynamic default value, evaluated
-  # in scope of self:
-  #
-  #   attr_accessor_with_default(:element_name) { name.underscore } 
-  #
-  ### TODO: Why doesn't this cause the proper default to return?
-  # def attr_reader_from_doc_with_default(sym, default = nil, &block)
-  #   puts ">>> #{sym} default: #{default.inspect}"
-  #   define_method("#{sym.to_s}_from_doc".to_sym, block)
-  #   module_eval(<<-EVAL, __FILE__, __LINE__)
-  #     def #{sym}
-  #       @#{sym} || @doc ? (@#{sym} = #{sym}_from_doc) : (#{default})
-  #     end
-  #   EVAL
-  # end
-  def attr_reader_from_doc_with_nil_default(sym, &block)
-    define_method("#{sym.to_s}_from_doc".to_sym, block)
-    module_eval(<<-EVAL, __FILE__, __LINE__)
-      def #{sym}
-        @#{sym} || @doc ? (@#{sym} = #{sym}_from_doc) : nil
-      end
-    EVAL
-  end
-  
-  def attr_reader_from_doc_with_empty_array_default(sym, &block)
-    define_method("#{sym.to_s}_from_doc".to_sym, block)
-    module_eval(<<-EVAL, __FILE__, __LINE__)
-      def #{sym}
-        @#{sym} || @doc ? (@#{sym} = #{sym}_from_doc) : []
-      end
-    EVAL
-  end
-end
+  def cached_attr_reader_from_doc_with_default(sym, opts)
+    define_method("#{sym}_from_doc") do
+      node = @doc.search(opts[:expr]).first
+      opts[:post].call(node) if node
+    end
 
-module Nokogiri
-  module HTML
-    class Document
-      def %(expr)
-        search(expr).first
-      end
+    define_method(sym) do
+      instance_variable_get("@#{sym}") || (@doc ? instance_variable_set("@#{sym}", self.send("#{sym}_from_doc")) : opts[:default])
     end
   end
+
+  def generate_cached_attr_readers(hash)
+    hash.each do |sym, opts|
+      cached_attr_reader_from_doc_with_default(sym, hash[sym])
+    end
+  end    
 end

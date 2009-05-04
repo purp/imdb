@@ -8,11 +8,15 @@ class IMDB
     include Rated
     include Timed
     
-    silence_warnings {SINGLE_VALUE_ATTRS += [:tagline]}
-
-    attr_reader_from_doc_with_nil_default(:tagline) do
-      info_node = get_info_from_doc('Tagline:')
-      info_node.inner_text.gsub(/^\s*Tagline:\s+|\s*more\s*$/,'').strip
-    end
+    LOCAL_ATTRIBUTES = {
+      :tagline => {
+        :expr => "div.info[contains('Tagline:', h5)]", 
+        :post => Proc.new {|n| n.inner_text.split(/\n|\s*more\s*/)[-1]},
+      },
+    }
+    
+    generate_cached_attr_readers(LOCAL_ATTRIBUTES)
+    
+    silence_warnings {ATTRIBUTES = LOCAL_ATTRIBUTES.merge(superclass::ATTRIBUTES)}
   end
 end

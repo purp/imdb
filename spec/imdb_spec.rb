@@ -11,22 +11,11 @@ describe IMDB do
 end
 
 def it_should_have_appropriate_readers_with_proper_defaults
-  it "should have appropriate readers" do
-    [@test_obj.class::SINGLE_VALUE_ATTRS + @test_obj.class::MULTI_VALUE_ATTRS].flatten.each do |attr_sym|
+  it "should have appropriate readers with proper defaults" do
+    @test_obj.class::ATTRIBUTES.each do |attr_sym, opts|
       @test_obj.should respond_to(attr_sym)
       @test_obj.should respond_to("#{attr_sym}_from_doc".to_sym)
-    end
-  end
-  
-  it "should default list readers to empty arrays" do
-    @test_obj.class::MULTI_VALUE_ATTRS.each do |attr_sym|
-      @test_obj.send(attr_sym).should == []
-    end
-  end
-      
-  it "should default non-list readers to nil" do
-    @test_obj.class::SINGLE_VALUE_ATTRS.each do |attr_sym|
-      @test_obj.send(attr_sym).should be_nil
+      @test_obj.send(attr_sym).should == opts[:default]
     end
   end
 end
@@ -76,12 +65,9 @@ describe IMDB::Title, "finders" do
       title.instance_of?(klass).should be_true
       title.id.should == title_id
       title.type.should == klass.to_s.split(':')[-1].downcase
-      title.class::MULTI_VALUE_ATTRS.each do |attr_sym|
-        title.send(attr_sym).should_not == []
-      end
-      title.class::SINGLE_VALUE_ATTRS.each do |attr_sym|
-        unless (title_id == 'tt0636615' && attr_sym == :runtime)
-          title.send(attr_sym).should_not be_nil
+      title.class::ATTRIBUTES.each do |attr_sym, opts|
+        unless (title_id == 'tt0636615' && [:runtime, :company].include?(attr_sym))
+          title.send(attr_sym).should_not == opts[:default]
         else
           title.send(attr_sym).should be_nil
         end
@@ -89,33 +75,6 @@ describe IMDB::Title, "finders" do
     end
   end
 end
-
-describe IMDB::Movie, "when first created" do
-  before(:each) do
-    @movie = IMDB::Movie.new
-  end
-  
-  it "should have appropriate readers" do
-    [IMDB::Movie::SINGLE_VALUE_ATTRS + IMDB::Movie::MULTI_VALUE_ATTRS].flatten.each do |attr_sym|
-      @movie.should respond_to(attr_sym)
-      @movie.should respond_to("#{attr_sym}_from_doc".to_sym)
-    end
-  end
-  
-  it "should default list readers to empty arrays" do
-    IMDB::Movie::MULTI_VALUE_ATTRS.each do |attr_sym|
-      @movie.send(attr_sym).should == []
-    end
-  end
-      
-  it "should default non-list readers to nil" do
-    IMDB::Movie::SINGLE_VALUE_ATTRS.each do |attr_sym|
-      @movie.send(attr_sym).should be_nil
-    end
-  end
-end
-
-
 
 describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do 
   before(:all) do
@@ -174,7 +133,7 @@ describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do
     @movie.writers[1].class.should == IMDB::Name
   end
 
-  it "should have five genres" do
+  it "should have three genres" do
     @movie.genres.length.should == 3
     @movie.genres[0].name.should eql('Animation')
     @movie.genres[1].name.should eql('Comedy')
