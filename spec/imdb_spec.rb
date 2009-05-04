@@ -1,9 +1,6 @@
 require 'spec_helper'
 require 'imdb'
 
-TITLE_SINGLE_VALUE_ATTRS = [:url, :id, :title, :rating, :plot]
-TITLE_MULTI_VALUE_ATTRS = [:directors, :writers, :genres]
-
 describe IMDB do
   it "should have an imdb movie base url" do
     IMDB::Title::BASE_URL.should eql("http://www.imdb.com/title/")
@@ -13,45 +10,59 @@ describe IMDB do
   end
 end
 
-describe IMDB::Title, "when first created" do
-  before(:each) do
-    @title = IMDB::Title.new
-  end
-  
+def it_should_have_appropriate_readers_with_proper_defaults
   it "should have appropriate readers" do
-    [TITLE_SINGLE_VALUE_ATTRS + TITLE_MULTI_VALUE_ATTRS].flatten.each do |attr_sym|
-      @title.should respond_to(attr_sym)
-      @title.should respond_to("#{attr_sym}_from_doc".to_sym)
+    [@test_obj.class::SINGLE_VALUE_ATTRS + @test_obj.class::MULTI_VALUE_ATTRS].flatten.each do |attr_sym|
+      @test_obj.should respond_to(attr_sym)
+      @test_obj.should respond_to("#{attr_sym}_from_doc".to_sym)
     end
   end
   
   it "should default list readers to empty arrays" do
-    TITLE_MULTI_VALUE_ATTRS.each do |attr_sym|
-      @title.send(attr_sym).should == []
+    @test_obj.class::MULTI_VALUE_ATTRS.each do |attr_sym|
+      @test_obj.send(attr_sym).should == []
     end
   end
       
-  it "should default non-list accessors to nil" do
-    TITLE_SINGLE_VALUE_ATTRS.each do |attr_sym|
-      @title.send(attr_sym).should be_nil
+  it "should default non-list readers to nil" do
+    @test_obj.class::SINGLE_VALUE_ATTRS.each do |attr_sym|
+      @test_obj.send(attr_sym).should be_nil
     end
   end
-  
-  it "should return an empty array if writers is nil" do
-    @title.instance_variable_set('@writers', nil)
-    @title.writers.should == []
-  end
-
-  it "should return an empty array if directors is nil" do
-    @title.instance_variable_set('@directors', nil)
-    @title.directors.should == []
-  end
-
-  it "should return an empty array if genres is nil" do
-    @title.instance_variable_set('@genres', nil)
-    @title.genres.should == []
-  end
 end
+
+describe IMDB::Title, "when first created" do
+  before(:each) do
+    @test_obj = IMDB::Title.new
+  end
+  
+  it_should_have_appropriate_readers_with_proper_defaults
+end
+
+describe IMDB::Movie, "when first created" do
+  before(:each) do
+    @test_obj = IMDB::Movie.new
+  end
+  
+  it_should_have_appropriate_readers_with_proper_defaults
+end
+
+describe IMDB::Series, "when first created" do
+  before(:each) do
+    @test_obj = IMDB::Series.new
+  end
+  
+  it_should_have_appropriate_readers_with_proper_defaults
+end
+
+describe IMDB::Episode, "when first created" do
+  before(:each) do
+    @test_obj = IMDB::Episode.new
+  end
+  
+  it_should_have_appropriate_readers_with_proper_defaults
+end
+
 
 describe IMDB::Title, "finders" do
   before(:all) do
@@ -59,21 +70,52 @@ describe IMDB::Title, "finders" do
   end
   
   it "should find by IMDB id and return an IMDB::Title or subclass which responds with non-nil values" do
-    {'tt0382932' => IMDB::Movie, 'tt0075529' => IMDB::Series, 'tt0636615' => IMDB::Episode, 'tt0374692' => IMDB::Title}.each do |title_id, klass|
+    {'tt0382932' => IMDB::Movie, 'tt0075529' => IMDB::Series, 'tt0636646' => IMDB::Episode, 'tt0636615' => IMDB::Episode, 'tt0374692' => IMDB::Title}.each do |title_id, klass|
       title = IMDB::Title.find_by_id(title_id)
       title.kind_of?(IMDB::Title).should be_true
       title.instance_of?(klass).should be_true
       title.id.should == title_id
       title.type.should == klass.to_s.split(':')[-1].downcase
-      TITLE_MULTI_VALUE_ATTRS.each do |attr_sym|
+      title.class::MULTI_VALUE_ATTRS.each do |attr_sym|
         title.send(attr_sym).should_not == []
       end
-      TITLE_SINGLE_VALUE_ATTRS.each do |attr_sym|
-        title.send(attr_sym).should_not be_nil
+      title.class::SINGLE_VALUE_ATTRS.each do |attr_sym|
+        unless (title_id == 'tt0636615' && attr_sym == :runtime)
+          title.send(attr_sym).should_not be_nil
+        else
+          title.send(attr_sym).should be_nil
+        end
       end
     end
   end
 end
+
+describe IMDB::Movie, "when first created" do
+  before(:each) do
+    @movie = IMDB::Movie.new
+  end
+  
+  it "should have appropriate readers" do
+    [IMDB::Movie::SINGLE_VALUE_ATTRS + IMDB::Movie::MULTI_VALUE_ATTRS].flatten.each do |attr_sym|
+      @movie.should respond_to(attr_sym)
+      @movie.should respond_to("#{attr_sym}_from_doc".to_sym)
+    end
+  end
+  
+  it "should default list readers to empty arrays" do
+    IMDB::Movie::MULTI_VALUE_ATTRS.each do |attr_sym|
+      @movie.send(attr_sym).should == []
+    end
+  end
+      
+  it "should default non-list readers to nil" do
+    IMDB::Movie::SINGLE_VALUE_ATTRS.each do |attr_sym|
+      @movie.send(attr_sym).should be_nil
+    end
+  end
+end
+
+
 
 describe IMDB::Movie, "after a IMDB::Title.find_by_id returns it" do 
   before(:all) do

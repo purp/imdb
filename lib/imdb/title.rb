@@ -1,6 +1,10 @@
 class IMDB
   class Title < IMDB
     BASE_URL = "http://www.imdb.com/title/"
+    
+    ### TODO: These should be hashes where values are blocks; then defining the readers is just iterating over the hash. I'm not smart enough to do this yet. I will be.
+    SINGLE_VALUE_ATTRS = [:url, :id, :title, :poster_url, :rating, :plot, :company]
+    MULTI_VALUE_ATTRS = [:directors, :writers, :genres]
 
     def self.find_by_id(id)
       data = open(BASE_URL + id).readlines
@@ -35,12 +39,7 @@ class IMDB
     end
     
     attr_reader_from_doc_with_nil_default(:poster_url) do
-      @doc.at("div.photo/a[@name='poster']/img")['src']
-    end
-    
-    attr_reader_from_doc_with_nil_default(:tagline) do
-      info_node = get_info_from_doc('Tagline:')
-      info_node.inner_text.gsub(/^\s*Tagline:\s+|\s*more\s*$/,'').strip
+      @doc.at("div.photo/a/img")['src']
     end
     
     attr_reader_from_doc_with_nil_default(:company) do
@@ -50,15 +49,6 @@ class IMDB
     attr_reader_from_doc_with_nil_default(:plot) do
       info = get_info_from_doc('Plot:').inner_text
       info.gsub(/^\s*Plot:\s+|\s*full summary\s*\|\s*full synopsis\s*$/,'')
-    end
-    
-    attr_reader_from_doc_with_nil_default(:runtime) do
-      get_info_from_doc('Runtime:').inner_text.gsub(/^\s*Runtime:\s+|\s*more\s*$/,'')
-    end
-    
-    attr_reader_from_doc_with_nil_default(:release_date) do
-      info = get_info_from_doc('Release Date:').inner_text
-      Date.parse(info.gsub(/^\s*Release Date:\s+|\s*more\s*$/,''))
     end
     
     attr_reader_from_doc_with_empty_array_default(:directors) do

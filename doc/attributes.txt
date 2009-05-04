@@ -1,51 +1,69 @@
 Attributes for IMDB::Title subclasses
 
+T = implemented in IMDB::Title
+
 M = Movie definitely has it
 m = Movie probably has it
-(you get the idea)
+S = Series definitely has it
+s = Series probably has it
+E = Episode definitely has it
+e = Episode probably has it
+
+... and when I get around to looking:
+V = Video Game definitely has it
+v = Video Game probably has it
 
 * = not yet implemented
 
-M S E attribute
-- - - ---------
-M S E url
-M S E id
-M S E title
-M S E poster_url (needs alias: primary_photo) (http://www.imdb.com/rg/action-box-title/title_noposter2/publicity/ is "No Poster" url)
-M S E *year
-M S E rating
-M S   *moviemeter
-M S E directors *(LFFP/LL: /fullcredits) (use "more" tag to guide)
-M S E writers *(LFFP/LL: /fullcredits) (use "more" tag to guide)
-    E tv series
-  S   *seasons
-M S   release date *(LFFP/LL: /releaseinfo) use "more" tag
-    E *original air date
-    E *season_number
-    E *episode_number
-M S E genres (always ignore more tag)
-M     tagline *(LFFP/LL: /taglines) use more tag
-M S E plot (needs alias: plot_summary)
-M S e *plot summaries (LFFP/LL: .../plotsummary) use "full summary" tag to guide
-M   E *synopsis (LL: .../synopsis) use "full synopsis" tag
-M   E *plot keywords (load from front page; LL: /keywords if requested)
-M S   *award_summary (LFFP) 
-M S   *awards (LL: .../awards) use more tag
-M S E *user comments (load from front page; LL: /usercomments if requested; use more tag; requires pagination)
-M S E *cast (LFFP/LL: /fullcredits)
-M s e *aka (check Cowboy Bebop for AKAs)
-M   E *parents guide (LL: /parentalguide)
-M S E runtime
-M S E country
-M S E *languages
-M S E *color
-M S E *aspect ratio (LFFP/LL: /technical) use more tag
-M S E *sound mix
-M S   *certifications
-  S E *filming locations (LFFP/LL: /locations)
-M S E company (LFFP/LL: /companycredits) use more tag
-M S E *trivia (LFFP/LL: /trivia)
-M   E *goofs (LFFP/LL: /goofs)
-M   E *quotes (LFFP/LL: /quotes)
-M S E *connections (LFFP/LL: /movieconnections)
-M S e *soundtrack (check Ally McBeal for episode soundtracks)
+If not implemented in IMDB::Title, implementation belongs in this module:
+  M S   IMDB::Title::Rated (crappy name, but it'll do for now)
+  M   E IMDB::Title::Individual
+    S E IMDB::Title::Episode
+  M S E IMDB::Title::Timed
+
+T M S E V attribute
+- - - - - ---------
+      E   *episode_number
+      E   *original air date
+      E   *season_number
+      E   *tv series
+    S     *seasons
+  M       tagline *(LFFP/LL: /taglines)
+  M   E   *goofs (LFFP/LL: /goofs)
+  M   E   *parents guide (LL: /parentalguide)
+  M   E   *plot keywords (LFFP/LL: /keywords)
+  M   E   *quotes (LFFP/LL: /quotes)
+  M   E   *synopsis (LL: /synopsis) use "full synopsis" tag
+  M S     *awards (LL: /awards)
+  M S     *award_summary (LFFP) 
+  M S     *certifications
+  M S     *moviemeter
+  M S     release date *(LFFP/LL: /releaseinfo)
+? M s e   *aka (check Cowboy Bebop for AKAs)
+? M S E   *aspect ratio (LFFP/LL: /technical)
+? M S E   *cast (LFFP/LL: /fullcredits)
+? M S E   *color
+? M S E   *connections (LFFP/LL: /movieconnections)
+? m S E   *filming locations (LFFP/LL: /locations)
+? M S E   *languages
+? M S e   *plot summaries (LFFP/LL: /plotsummary) use "full summary" tag
+? M S E   *sound mix
+? M S e   *soundtrack (check Ally McBeal for episode soundtracks)
+? M S E   *trivia (LFFP/LL: /trivia)
+? M S E   *user comments (LFFP/LL: /usercomments; requires pagination)
+? M S E   *year
+  M S E   runtime
+T M S E   company *(LFFP/LL: /companycredits)
+T M S E   country
+T M S E   directors *(LFFP/LL: /fullcredits)
+T M S E   genres (always ignore more tag)
+T M S E   id
+T M S E   plot *(needs alias: plot_summary)
+T M S E   poster_url *(needs alias: primary_photo)
+T M S E   rating
+T M S E   title
+T M S E   url
+T M S E   writers *(LFFP/LL: /fullcredits)
+
+LFFP: Load from first page
+LL:   Lazy Load -- call the subpage if the plural method is called and there's more to fetch (as indicated by the "more" tag)
