@@ -24,7 +24,12 @@ require 'imdb/title'
 require 'imdb/company'
 require 'imdb/movie'
 require 'imdb/name'
-require 'imdb/genre'
 require 'imdb/series'
 require 'imdb/episode'
+require 'imdb/section'
+require 'imdb/genre'
+require 'imdb/year'
+require 'imdb/language'
+require 'imdb/country'
+
 

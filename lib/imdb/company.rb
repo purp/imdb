@@ -1,5 +1,7 @@
 class IMDB
   class Company
+    BASE_URL = "http://www.imdb.com/company/"
+    
     attr_accessor :id, :name
   
     def initialize(*args)

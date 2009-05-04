@@ -1,5 +1,7 @@
 class IMDB
   class Name
+    BASE_URL = "http://www.imdb.com/name/"
+    
     def self.get_names(node)
       return unless node && node.class == Nokogiri::XML::Element
       names = []

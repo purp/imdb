@@ -66,7 +66,8 @@ describe IMDB::Title, "finders" do
       title.id.should == title_id
       title.type.should == klass.to_s.split(':')[-1].downcase
       title.class::ATTRIBUTES.each do |attr_sym, opts|
-        unless (title_id == 'tt0636615' && [:runtime, :company].include?(attr_sym))
+        unless (title_id == 'tt0636615' && [:runtime, :company, :country].include?(attr_sym))
+          # puts ">>> #{title_id}.#{attr_sym}"
           title.send(attr_sym).should_not == opts[:default]
         else
           title.send(attr_sym).should be_nil

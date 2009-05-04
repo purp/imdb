@@ -7,7 +7,7 @@ class IMDB
     include Individual
     include Rated
     include Timed
-    
+        
     LOCAL_ATTRIBUTES = {
       :tagline => {
         :expr => "div.info[contains('Tagline:', h5)]", 

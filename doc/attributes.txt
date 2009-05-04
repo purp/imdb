@@ -45,13 +45,13 @@ T M S E V attribute
 ? M S E   *color
 ? M S E   *connections (LFFP/LL: /movieconnections)
 ? m S E   *filming locations (LFFP/LL: /locations)
-? M S E   *languages
+T M S E   languages
 ? M S e   *plot summaries (LFFP/LL: /plotsummary) use "full summary" tag
 ? M S E   *sound mix
 ? M S e   *soundtrack (check Ally McBeal for episode soundtracks)
 ? M S E   *trivia (LFFP/LL: /trivia)
 ? M S E   *user comments (LFFP/LL: /usercomments; requires pagination)
-? M S E   *year
+T M S E V year
   M S E   runtime
 T M S E   company *(LFFP/LL: /companycredits)
 T M S E   country
